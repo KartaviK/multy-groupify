@@ -22,8 +22,8 @@ There are two methods for usage:
 |argument|type|required|description|
 |----|----|----|----|
 |collection|`any[]`|true|Your own collection that you want to group|
-|retrieveFunctions|`{[p: string]: (value: any) => any} | string[]`|true|Collection of attributes, or collection of custom retrieve functions, where property is target attribute|
-|compareFunctions|`{[p: string]: (groupValue: any, compareValue: any) => boolean} | undefined`|false|Your custom compare functions|
+|retrieveFunctions|`{[p: string]: (value: any) => any}`, `string[]`|true|Collection of attributes, or collection of custom retrieve functions, where property is target attribute|
+|compareFunctions|`{[p: string]: (groupValue: any, compareValue: any) => boolean}`,`undefined`|false|Your custom compare functions|
 
 ### Examples
 
