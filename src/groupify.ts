@@ -133,4 +133,4 @@ export default function groupify<T extends KeyValueCollection>(
     }
 
     return groups;
-};
+}
