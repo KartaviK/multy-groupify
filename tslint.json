@@ -1,0 +1,85 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "adjacent-overload-signatures": true,
+        "ban-ts-ignore": true,
+        "no-empty-interface": false,
+        "no-any": false,
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "public-static-field",
+                    "public-instance-field",
+                    "private-static-field",
+                    "private-instance-field",
+                    "public-constructor",
+                    "private-constructor",
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method"
+                ],
+                "alphabetize": true
+            }
+        ],
+        "no-for-in": false,
+        "curly": true,
+        "forin": false,
+        "no-console": [
+            true,
+            "log",
+            "info"
+        ],
+        "no-duplicate-super": true,
+        "no-duplicate-switch-case": true,
+        "no-duplicate-variable": true,
+        "no-empty": [
+            true,
+            "allow-empty-catch"
+        ],
+        "no-implicit-dependencies": true,
+        "no-invalid-template-strings": true,
+        "no-invalid-this": true,
+        "no-tautology-expression": true,
+        "no-string-throw": true,
+        "no-var-keyword": true,
+        "restrict-plus-operands": true,
+        "strict-comparisons": true,
+        "switch-default": true,
+        "triple-equals": true,
+        "cyclomatic-complexity": [
+            true,
+            20
+        ],
+        "array-type": [
+            true,
+            "array-simple"
+        ],
+        "arrow-return-shorthand": [
+            true,
+            "multiline"
+        ],
+        "class-name": true,
+        "comment-format": [
+            true,
+            "check-lowercase",
+            {
+                "ignore-words": [
+                    "TODO",
+                    "HACK"
+                ]
+            }
+        ],
+        "encoding": true,
+        "increment-decrement": false,
+        "interface-name": [
+            true,
+            "never-prefix"
+        ]
+    },
+    "rulesDirectory": []
+}

@@ -1,0 +1,42 @@
+{
+    "name": "multy-groupify",
+    "version": "1.0.0",
+    "description": "Group collection by multiple keys using custom conditions",
+    "main": "dist/groupify.js",
+    "types": "dist/groupify.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "cover": "jest --coverage"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/KartaviK/multy-groupify.git"
+    },
+    "author": "Roman Varkuta <roman.varkuta@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/KartaviK/multy-groupify/issues"
+    },
+    "homepage": "https://github.com/KartaviK/multy-groupify#readme",
+    "devDependencies": {
+        "@babel/core": "^7.7.2",
+        "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
+        "@babel/preset-env": "^7.7.1",
+        "@babel/preset-typescript": "^7.7.2",
+        "@types/jest": "^24.0.23",
+        "@types/node": "^12.12.11",
+        "babel": "^6.23.0",
+        "babel-core": "^6.26.3",
+        "babel-jest": "^24.9.0",
+        "babel-loader": "^8.0.6",
+        "codecov": "^3.6.1",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.2"
+    },
+    "dependencies": {},
+    "prepublish": "tsc"
+}
