@@ -1,22 +1,30 @@
+/** User callback to retrieve property value and use it to group elements */
 export type RetrieveFunction = (property: any) => any;
 
+/**
+ * Simple interface to represent an any object
+ */
 export interface KeyValueCollection {
     [key: string]: any;
 }
 
+/**
+ * Collection of user's retrieve callbacks
+ */
 export interface RetrieveFunctionCollection {
     [propertyName: string]: RetrieveFunction;
 }
 
+/**
+ * User's custom callbacks to compare element in already grouped collection and not grouped element
+ */
 export interface CompareFunctionCollection {
     [propertyName: string]: (groupValue: any, compareValue: any) => boolean;
 }
 
-export interface GroupifyOptions {
-    compare?: CompareFunctionCollection;
-    retrieve: RetrieveFunctionCollection | string[];
-}
-
+/**
+ * Simple group to represent items and common keys for it
+ */
 export class Group<T extends KeyValueCollection> {
     private readonly items: T[] = [];
     private readonly keys: KeyValueCollection = {};
@@ -35,13 +43,39 @@ export class Group<T extends KeyValueCollection> {
     }
 }
 
-export default function groupify<T extends KeyValueCollection>(
+/**
+ * Simple customizable groupBy method
+ *
+ * @param collection
+ * @param retrieveFunctions
+ * @param compareFunctions
+ * @return Array<Group<T>>
+ */
+const groupBy = <T extends KeyValueCollection>(
     collection: T[],
-    groupOptions: GroupifyOptions = {
-        compare: {},
-        retrieve: [],
-    },
-): Array<Group<T>> {
+    retrieveFunctions: RetrieveFunctionCollection | string[],
+    compareFunctions?: CompareFunctionCollection,
+): T[][] => {
+    return groupify(collection, retrieveFunctions, compareFunctions)
+        .map((group: Group<T>): T[] => {
+            return group.Items;
+        });
+};
+
+/**
+ * Group elements in collection by your custom options!
+ * Also you will save your keys in unique Group object
+ *
+ * @param collection
+ * @param retrieveFunctions
+ * @param compareFunctions
+ * @return Array<Group<T>>
+ */
+const groupify = <T extends KeyValueCollection>(
+    collection: T[],
+    retrieveFunctions: RetrieveFunctionCollection | string[],
+    compareFunctions?: CompareFunctionCollection,
+): Array<Group<T>> => {
     const groups: Array<Group<T>> = [];
     let attributes: string[] = [];
     let keyValues: KeyValueCollection = {};
@@ -65,8 +99,8 @@ export default function groupify<T extends KeyValueCollection>(
             if (!group || !group.Keys[attribute]) {
                 return false;
             }
-            if (groupOptions.compare && groupOptions.compare[attribute] instanceof Function) {
-                if (!groupOptions.compare[attribute](group.Keys[attribute], keyValues[attribute])) {
+            if (compareFunctions && compareFunctions[attribute] instanceof Function) {
+                if (!compareFunctions[attribute](group.Keys[attribute], keyValues[attribute])) {
                     return false;
                 }
             } else if (group.Keys[attribute] !== keyValues[attribute]) {
@@ -77,8 +111,8 @@ export default function groupify<T extends KeyValueCollection>(
         return true;
     };
 
-    if (Array.isArray(groupOptions.retrieve)) {
-        attributes = groupOptions.retrieve;
+    if (Array.isArray(retrieveFunctions)) {
+        attributes = retrieveFunctions;
 
         collection.forEach((item: T): void => {
             for (const attribute of attributes) {
@@ -88,8 +122,8 @@ export default function groupify<T extends KeyValueCollection>(
             processGroup(groups.find(groupFindHandler), item);
         });
     } else {
-        const retrieveParams = Object.entries(groupOptions.retrieve);
-        attributes = Object.keys(groupOptions.retrieve);
+        const retrieveParams = Object.entries(retrieveFunctions);
+        attributes = Object.keys(retrieveFunctions);
 
         collection.forEach((item: T): void => {
             for (const [attribute, callback] of retrieveParams) {
@@ -101,4 +135,9 @@ export default function groupify<T extends KeyValueCollection>(
     }
 
     return groups;
+};
+
+export {
+    groupBy,
+    groupify
 }
