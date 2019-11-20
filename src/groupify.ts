@@ -51,11 +51,14 @@ export class Group<T extends KeyValueCollection> {
  * @param compareFunctions
  * @return Array<Group<T>>
  */
-const groupBy = <T extends KeyValueCollection>(
+export function groupBy<T extends KeyValueCollection>(
     collection: T[],
     retrieveFunctions: RetrieveFunctionCollection | string[],
     compareFunctions?: CompareFunctionCollection,
-): T[][] => groupify(collection, retrieveFunctions, compareFunctions).map((group: Group<T>): T[] => group.Items);
+): T[][] {
+    return groupify(collection, retrieveFunctions, compareFunctions)
+        .map((group: Group<T>): T[] => group.Items);
+}
 
 /**
  * Group elements in collection by your custom options!
@@ -66,11 +69,11 @@ const groupBy = <T extends KeyValueCollection>(
  * @param compareFunctions
  * @return Array<Group<T>>
  */
-const groupify = <T extends KeyValueCollection>(
+export default function groupify<T extends KeyValueCollection>(
     collection: T[],
     retrieveFunctions: RetrieveFunctionCollection | string[],
     compareFunctions?: CompareFunctionCollection,
-): Array<Group<T>> => {
+): Array<Group<T>> {
     const groups: Array<Group<T>> = [];
     let attributes: string[] = [];
     let keyValues: KeyValueCollection = {};
@@ -130,9 +133,4 @@ const groupify = <T extends KeyValueCollection>(
     }
 
     return groups;
-};
-
-export {
-    groupBy,
-    groupify,
 };
