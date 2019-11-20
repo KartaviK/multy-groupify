@@ -6,7 +6,7 @@
     "types": "dist/groupify.d.ts",
     "scripts": {
         "build": "tsc",
-        "lint": "tslint",
+        "lint": "tslint --project .",
         "test": "jest",
         "cover": "jest --coverage"
     },

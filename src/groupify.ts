@@ -11,20 +11,20 @@ export interface KeyValueCollection {
 }
 
 export class Group {
-    private readonly keys: KeyValueCollection = [];
     private readonly items: any[] = [];
+    private readonly keys: KeyValueCollection = [];
 
     constructor(keys: KeyValueCollection, items: any[]) {
-        this.keys = keys;
         this.items = items;
-    }
-
-    get Keys(): KeyValueCollection {
-        return this.keys;
+        this.keys = keys;
     }
 
     get Items(): any[] {
         return this.items;
+    }
+
+    get Keys(): KeyValueCollection {
+        return this.keys;
     }
 }
 
@@ -39,19 +39,19 @@ export class Group {
 export default function groupify(
     collection: Array<{ [props: string]: any }>,
     retrieveFunctions: RetrieveFunctionCollection,
-    compareFunctions?: CompareFunctionCollection
-): Array<Group> {
-    const groups: Array<Group> = [];
+    compareFunctions?: CompareFunctionCollection,
+): Group[] {
+    const groups: Group[] = [];
     let keyValues: KeyValueCollection = {};
 
     collection.forEach((item: KeyValueCollection) => {
-        for (let attribute in retrieveFunctions) {
+        for (const attribute in retrieveFunctions) {
             keyValues[attribute] = retrieveFunctions.hasOwnProperty(attribute)
                 ? retrieveFunctions[attribute](item[attribute])
                 : undefined;
         }
-        let group = groups.find((group: Group) => {
-            for (let key in retrieveFunctions) {
+        const findGroup: Group|undefined = groups.find((group: Group) => {
+            for (const key in retrieveFunctions) {
                 if (!group || !group.Keys[key]) {
                     return false;
                 }
@@ -67,8 +67,8 @@ export default function groupify(
             return true;
         });
 
-        if (group) {
-            group.Items.push(item);
+        if (findGroup !== undefined) {
+            findGroup.Items.push(item);
         } else {
             groups.push(new Group(keyValues, [item]));
         }
