@@ -2,20 +2,21 @@ module.exports = {
     clearMocks: true,
     collectCoverage: true,
     collectCoverageFrom: [
-        'src/**'
+        'src/**',
     ],
     coverageDirectory: "coverage",
     coveragePathIgnorePatterns: [
-      "\\\\node_modules\\\\"
+        "\\\\node_modules\\\\",
     ],
     coverageReporters: [
-      "clover"
+        "clover",
     ],
     moduleFileExtensions: [
-      "ts",
+        "js",
+        "ts",
     ],
     testEnvironment: "node",
     transform: {
-        "^.+\\.(ts|tsx)?$": "ts-jest"
+        "^.+\\.(ts|tsx)?$": "ts-jest",
     },
 };
