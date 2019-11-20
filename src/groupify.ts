@@ -1,25 +1,32 @@
+export type RetrieveFunction = (property: any) => any;
+
+export interface KeyValueCollection {
+    [key: string]: any;
+}
+
 export interface RetrieveFunctionCollection {
-    [propertyName: string]: (property: any) => any;
+    [propertyName: string]: RetrieveFunction;
 }
 
 export interface CompareFunctionCollection {
     [propertyName: string]: (groupValue: any, compareValue: any) => boolean;
 }
 
-export interface KeyValueCollection {
-    [key: string]: any;
+export interface GroupifyOptions {
+    compare?: CompareFunctionCollection;
+    retrieve: RetrieveFunctionCollection | string[];
 }
 
-export class Group {
-    private readonly items: any[] = [];
-    private readonly keys: KeyValueCollection = [];
+export class Group<T extends KeyValueCollection> {
+    private readonly items: T[] = [];
+    private readonly keys: KeyValueCollection = {};
 
-    constructor(keys: KeyValueCollection, items: any[]) {
+    constructor(keys: KeyValueCollection, items: T[] = []) {
         this.items = items;
         this.keys = keys;
     }
 
-    get Items(): any[] {
+    get Items(): T[] {
         return this.items;
     }
 
@@ -28,53 +35,70 @@ export class Group {
     }
 }
 
-/**
- * Group your items in array by multiple Keys!
- *
- * @param collection
- * @param retrieveFunctions
- * @param compareFunctions
- * @returns {Array}
- */
-export default function groupify(
-    collection: Array<{ [props: string]: any }>,
-    retrieveFunctions: RetrieveFunctionCollection,
-    compareFunctions?: CompareFunctionCollection,
-): Group[] {
-    const groups: Group[] = [];
+export default function groupify<T extends KeyValueCollection>(
+    collection: T[],
+    groupOptions: GroupifyOptions = {
+        compare: {},
+        retrieve: [],
+    },
+): Array<Group<T>> {
+    const groups: Array<Group<T>> = [];
+    let attributes: string[] = [];
     let keyValues: KeyValueCollection = {};
 
-    collection.forEach((item: KeyValueCollection) => {
-        for (const attribute in retrieveFunctions) {
-            keyValues[attribute] = retrieveFunctions.hasOwnProperty(attribute)
-                ? retrieveFunctions[attribute](item[attribute])
-                : undefined;
-        }
-        const findGroup: Group|undefined = groups.find((group: Group) => {
-            for (const key in retrieveFunctions) {
-                if (!group || !group.Keys[key]) {
-                    return false;
-                }
-                if (compareFunctions && compareFunctions[key] instanceof Function) {
-                    if (!compareFunctions[key](group.Keys[key], keyValues[key])) {
-                        return false;
-                    }
-                } else if (group.Keys[key] !== keyValues[key]) {
-                    return false;
-                }
-            }
-
-            return true;
-        });
-
+    const processGroup = (findGroup: Group<T> | undefined, item: T): void => {
         if (findGroup !== undefined) {
             findGroup.Items.push(item);
         } else {
-            groups.push(new Group(keyValues, [item]));
+            groups.push(new Group<T>(keyValues, [item]));
         }
 
         keyValues = {};
-    });
+    };
+    const processRetrieve = (item: T, attribute: string, customDeepRetrieve?: RetrieveFunction) => {
+        const value = item.hasOwnProperty(attribute) ? item[attribute] : undefined;
+
+        keyValues[attribute] = customDeepRetrieve ? customDeepRetrieve(value) : value;
+    };
+    const groupFindHandler: (group: Group<T>) => boolean = (group: Group<T>): boolean => {
+        for (const attribute of attributes) {
+            if (!group || !group.Keys[attribute]) {
+                return false;
+            }
+            if (groupOptions.compare && groupOptions.compare[attribute] instanceof Function) {
+                if (!groupOptions.compare[attribute](group.Keys[attribute], keyValues[attribute])) {
+                    return false;
+                }
+            } else if (group.Keys[attribute] !== keyValues[attribute]) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    if (Array.isArray(groupOptions.retrieve)) {
+        attributes = groupOptions.retrieve;
+
+        collection.forEach((item: T): void => {
+            for (const attribute of attributes) {
+                processRetrieve(item, attribute);
+            }
+
+            processGroup(groups.find(groupFindHandler), item);
+        });
+    } else {
+        const retrieveParams = Object.entries(groupOptions.retrieve);
+        attributes = Object.keys(groupOptions.retrieve);
+
+        collection.forEach((item: T): void => {
+            for (const [attribute, callback] of retrieveParams) {
+                processRetrieve(item, attribute, callback);
+            }
+
+            processGroup(groups.find(groupFindHandler), item);
+        });
+    }
 
     return groups;
 }
