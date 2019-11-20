@@ -1,4 +1,4 @@
-import groupify from "../src/groupify";
+import * as grouper from "../src/groupify";
 
 const simpleCollection = [
     {name: "Kasper", age: 12},
@@ -10,10 +10,8 @@ const simpleCollection = [
 
 describe("Groupify by callbacks!", () => {
     it("Group by only one attribute", () => {
-        const groupsByName = groupify(simpleCollection, {
-            retrieve: {
-                age: (value: any) => value
-            },
+        const groupsByName = grouper.groupify(simpleCollection, {
+            age: (value: any) => value
         });
 
         expect(groupsByName.length).toBe(3);
@@ -25,7 +23,7 @@ describe("Groupify by callbacks!", () => {
 
 describe("Groupify by simple array of properties names!", () => {
     it("Group by only one attribute", () => {
-        const groupsByName = groupify(simpleCollection, {retrieve: ['age']});
+        const groupsByName = grouper.groupify(simpleCollection, ['age']);
 
         expect(groupsByName.length).toBe(3);
         expect(groupsByName[0].Keys.age).toBe(12);
