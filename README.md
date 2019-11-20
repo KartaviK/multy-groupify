@@ -1,5 +1,8 @@
 # Multy-groupify
 
+[![Build Status](https://travis-ci.com/KartaviK/multy-groupify.svg?branch=master)](https://travis-ci.com/KartaviK/multy-groupify)
+[![codecov](https://codecov.io/gh/KartaviK/multy-groupify/branch/master/graph/badge.svg)](https://codecov.io/gh/KartaviK/multy-groupify)
+
 Base method to group elements in collection by custom properties and compare calbacks
 
 ## Installation
