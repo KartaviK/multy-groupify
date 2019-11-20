@@ -87,12 +87,12 @@ export default function groupify<T extends KeyValueCollection>(
 
         keyValues = {};
     };
-    const processRetrieve = (item: T, attribute: string, customDeepRetrieve?: RetrieveFunction) => {
+    const processRetrieve = (item: T, attribute: string, customDeepRetrieve?: RetrieveFunction): void => {
         const value = item.hasOwnProperty(attribute) ? item[attribute] : undefined;
 
         keyValues[attribute] = customDeepRetrieve ? customDeepRetrieve(value) : value;
     };
-    const groupFindHandler: (group: Group<T>) => boolean = (group: Group<T>): boolean => {
+    const groupFindHandler = (group: Group<T>): boolean => {
         for (const attribute of attributes) {
             if (!group || !group.Keys[attribute]) {
                 return false;
