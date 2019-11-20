@@ -1,6 +1,8 @@
 export type RetrieveFunction = (property: any) => any;
 
-export type KeyValueCollection = { [key: string]: any; };
+export interface KeyValueCollection {
+    [key: string]: any;
+}
 
 export interface RetrieveFunctionCollection {
     [propertyName: string]: RetrieveFunction;
@@ -11,8 +13,8 @@ export interface CompareFunctionCollection {
 }
 
 export interface GroupifyOptions {
-    retrieve: RetrieveFunctionCollection | string[],
-    compare?: CompareFunctionCollection,
+    compare?: CompareFunctionCollection;
+    retrieve: RetrieveFunctionCollection | string[];
 }
 
 export class Group<T extends KeyValueCollection> {
@@ -36,15 +38,15 @@ export class Group<T extends KeyValueCollection> {
 export default function groupify<T extends KeyValueCollection>(
     collection: T[],
     groupOptions: GroupifyOptions = {
-        retrieve: [],
         compare: {},
+        retrieve: [],
     },
-): Group<T>[] {
-    const groups: Group<T>[] = [];
+): Array<Group<T>> {
+    const groups: Array<Group<T>> = [];
     let attributes: string[] = [];
     let keyValues: KeyValueCollection = {};
 
-    const processGroup: Function = (findGroup: Group<T> | undefined, item: T): void => {
+    const processGroup = (findGroup: Group<T> | undefined, item: T): void => {
         if (findGroup !== undefined) {
             findGroup.Items.push(item);
         } else {
