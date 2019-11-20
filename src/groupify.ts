@@ -49,7 +49,7 @@ export class Group<T extends KeyValueCollection> {
  * @param collection
  * @param retrieveFunctions
  * @param compareFunctions
- * @return Array<Group<T>>
+ * @return T[][]
  */
 export function groupBy<T extends KeyValueCollection>(
     collection: T[],
@@ -67,7 +67,7 @@ export function groupBy<T extends KeyValueCollection>(
  * @param collection
  * @param retrieveFunctions
  * @param compareFunctions
- * @return Array<Group<T>>
+ * @return Group<T>[]
  */
 export default function groupify<T extends KeyValueCollection>(
     collection: T[],
