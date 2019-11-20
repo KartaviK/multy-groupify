@@ -55,9 +55,7 @@ const groupBy = <T extends KeyValueCollection>(
     collection: T[],
     retrieveFunctions: RetrieveFunctionCollection | string[],
     compareFunctions?: CompareFunctionCollection,
-): T[][] => groupify(collection, retrieveFunctions, compareFunctions).map((group: Group<T>): T[] => {
-    return group.Items;
-});
+): T[][] => groupify(collection, retrieveFunctions, compareFunctions).map((group: Group<T>): T[] => group.Items);
 
 /**
  * Group elements in collection by your custom options!
