@@ -1,6 +1,6 @@
 {
     "name": "multy-groupify",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "description": "Group collection by multiple keys using custom conditions",
     "main": "dist/groupify.js",
     "types": "dist/groupify.d.ts",
@@ -8,14 +8,19 @@
         "build": "tsc",
         "lint": "tslint --project .",
         "test": "jest",
-        "cover": "jest --coverage"
+        "cover": "jest --coverage",
+        "minify": "jsmin -o dist/groupify.js dist/groupify.js"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/KartaviK/multy-groupify.git"
     },
-    "author": "Roman Varkuta <roman.varkuta@gmail.com>",
-    "license": "ISC",
+    "author": {
+        "name": "Roman Varkuta",
+        "email": "roman.varkuta@gmail.com",
+        "url": "https://www.linkedin.com/in/roman-varkuta-431a9b169/"
+    },
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/KartaviK/multy-groupify/issues"
     },
@@ -34,10 +39,11 @@
         "babel-loader": "^8.0.6",
         "codecov": "^3.6.1",
         "jest": "^24.9.0",
+        "jsmin": "^1.0.1",
         "ts-jest": "^24.1.0",
         "tslint": "^5.20.1",
         "typescript": "^3.7.2"
     },
     "dependencies": {},
-    "prepublish": "tsc"
+    "prepublish": "tsc && npm run minify"
 }

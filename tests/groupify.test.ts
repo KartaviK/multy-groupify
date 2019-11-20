@@ -1,4 +1,4 @@
-import groupify from "../src/groupify";
+import groupify, {groupBy} from "../src/groupify";
 
 const simpleCollection = [
     {name: "Kasper", age: 12},
@@ -10,26 +10,59 @@ const simpleCollection = [
 
 describe("Groupify by callbacks!", () => {
     it("Group by only one attribute", () => {
-        const groupsByName = groupify(simpleCollection, {
-            retrieve: {
-                age: (value: any) => value
-            },
+        const byAge = groupify(simpleCollection, {
+            age: (value: any) => value
         });
 
-        expect(groupsByName.length).toBe(3);
-        expect(groupsByName[0].Keys.age).toBe(12);
-        expect(groupsByName[1].Keys.age).toBe(6);
-        expect(groupsByName[2].Keys.age).toBe(16);
+        expect(byAge.length).toBe(3);
+        expect(byAge[0].Keys.age).toBe(12);
+        expect(byAge[1].Keys.age).toBe(6);
+        expect(byAge[2].Keys.age).toBe(16);
+    });
+
+    it('Group with simple custom compare callback', () => {
+        const byAge = groupify(simpleCollection, {
+            age: (value: any) => value
+        }, {
+            age: (groupValue, compareValue) => groupValue === compareValue
+        });
+
+        expect(byAge.length).toBe(3);
+    });
+
+    it('Group with custom specific compare callback', () => {
+        const byAge = groupify(simpleCollection, {
+            age: (value: any) => value
+        }, {
+            age: (groupValue, compareValue) => groupValue === compareValue && compareValue === 16
+        });
+
+        expect(byAge.length).toBe(4);
+        expect(byAge[0].Keys.age).toBe(12);
+        expect(byAge[1].Keys.age).toBe(12);
+        expect(byAge[2].Keys.age).toBe(6);
+        expect(byAge[3].Keys.age).toBe(16);
     });
 });
 
 describe("Groupify by simple array of properties names!", () => {
     it("Group by only one attribute", () => {
-        const groupsByName = groupify(simpleCollection, {retrieve: ['age']});
+        const byAge = groupify(simpleCollection, ['age']);
 
-        expect(groupsByName.length).toBe(3);
-        expect(groupsByName[0].Keys.age).toBe(12);
-        expect(groupsByName[1].Keys.age).toBe(6);
-        expect(groupsByName[2].Keys.age).toBe(16);
+        expect(byAge.length).toBe(3);
+        expect(byAge[0].Keys.age).toBe(12);
+        expect(byAge[1].Keys.age).toBe(6);
+        expect(byAge[2].Keys.age).toBe(16);
+    });
+});
+
+describe("Simple group elements by", () => {
+    it("Will return simple grouped collection", () => {
+        const byAge = groupBy(simpleCollection, ['age']);
+
+        expect(byAge.length).toBe(3);
+        expect(Array.isArray(byAge[0])).toBeTruthy();
+        expect(Array.isArray(byAge[1])).toBeTruthy();
+        expect(Array.isArray(byAge[2])).toBeTruthy();
     });
 });
