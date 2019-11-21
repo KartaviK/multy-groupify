@@ -44,23 +44,6 @@ export class Group<T extends KeyValueCollection> {
 }
 
 /**
- * Simple customizable groupBy method
- *
- * @param collection
- * @param retrieveFunctions
- * @param compareFunctions
- * @return T[][]
- */
-export function groupBy<T extends KeyValueCollection>(
-    collection: T[],
-    retrieveFunctions: RetrieveFunctionCollection | string[],
-    compareFunctions?: CompareFunctionCollection,
-): T[][] {
-    return groupify(collection, retrieveFunctions, compareFunctions)
-        .map((group: Group<T>): T[] => group.Items);
-}
-
-/**
  * Group elements in collection by your custom options!
  * Also you will save your keys in unique Group object
  *

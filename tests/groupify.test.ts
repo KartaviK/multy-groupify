@@ -1,4 +1,4 @@
-import groupify, {groupBy} from "../src/groupify";
+import groupify from "../src/groupify";
 
 const simpleCollection = [
     {name: "Kasper", age: 12},
@@ -53,16 +53,5 @@ describe("Groupify by simple array of properties names!", () => {
         expect(byAge[0].Keys.age).toBe(12);
         expect(byAge[1].Keys.age).toBe(6);
         expect(byAge[2].Keys.age).toBe(16);
-    });
-});
-
-describe("Simple group elements by", () => {
-    it("Will return simple grouped collection", () => {
-        const byAge = groupBy(simpleCollection, ['age']);
-
-        expect(byAge.length).toBe(3);
-        expect(Array.isArray(byAge[0])).toBeTruthy();
-        expect(Array.isArray(byAge[1])).toBeTruthy();
-        expect(Array.isArray(byAge[2])).toBeTruthy();
     });
 });
